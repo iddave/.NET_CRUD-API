@@ -14,6 +14,7 @@ namespace WebApplication1.repository.implementation
                 {
                     //db.Persons.Remove(person);
                     person.Status = Status.DELETED;
+                    db.Update(person);
                     db.SaveChanges();
                 }
                 return person;
@@ -47,19 +48,20 @@ namespace WebApplication1.repository.implementation
             }
         }
 
-        public Person? Update(int id, Person oldPerson)
+        public Person? Update(int id, Person person)
         {
             using (var db = contextFactory.CreateDbContext(null))
             {
-                var person = FindById(id);
+                var oldPerson = FindById(id);
                 if (person != null)
                 {
                     oldPerson.FullName = person.FullName;
                     oldPerson.BirthDate = person.BirthDate;
                     oldPerson.PhoneNumber = person.PhoneNumber;
+                    db.Update(oldPerson);
                     db.SaveChanges();
                 }
-                return person;
+                return oldPerson;
             }
         }
     }

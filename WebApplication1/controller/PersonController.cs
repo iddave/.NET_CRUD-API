@@ -37,7 +37,7 @@ namespace WebApplication1.controller
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdatePerson(int id, [FromBody] Person inputPerson)
+        public IActionResult UpdatePerson(int id, [FromForm] Person inputPerson)
         {
             if (!IsValidPhoneNumber(inputPerson.PhoneNumber)) return BadRequest("Invalid phone number!");
             
