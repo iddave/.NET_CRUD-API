@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using WebApplication1.model;
+using WebApplication1.repository;
 using WebApplication1.repository.implementation;
 
 namespace WebApplication1.controller
@@ -10,7 +11,12 @@ namespace WebApplication1.controller
     [ApiController]
     public class PersonController : ControllerBase
     {
-        public PersonRepositoryImpl personRepositoryImpl { get; set; }
+        private readonly IPersonRepository personRepositoryImpl;
+
+        public PersonController(IPersonRepository personRepositoryImpl)
+        {
+            this.personRepositoryImpl = personRepositoryImpl;
+        }
 
         public string Index() => "Hello world";
 
@@ -22,20 +28,20 @@ namespace WebApplication1.controller
         }
 
         [HttpPost] //?
-        public IActionResult CreatePerson([FromForm] Person input_person)
+        public IActionResult CreatePerson([FromForm] Person inputPerson)
         {
-            if (!IsValidPhoneNumber(input_person.PhoneNumber)) return BadRequest("Invalid phone number!");
+            if (!IsValidPhoneNumber(inputPerson.PhoneNumber)) return BadRequest("Invalid phone number!");
 
-            var savedPerson = personRepositoryImpl.Save(input_person);
+            var savedPerson = personRepositoryImpl.Save(inputPerson);
             return Ok(savedPerson);
         }
 
-        [HttpPut]
-        public IActionResult UpdatePerson(int id, [FromBody] Person input_person)
+        [HttpPut("{id}")]
+        public IActionResult UpdatePerson(int id, [FromBody] Person inputPerson)
         {
-            if (!IsValidPhoneNumber(input_person.PhoneNumber)) return BadRequest("Invalid phone number!");
+            if (!IsValidPhoneNumber(inputPerson.PhoneNumber)) return BadRequest("Invalid phone number!");
             
-            var updatedPerson = personRepositoryImpl.Update(id, input_person);
+            var updatedPerson = personRepositoryImpl.Update(id, inputPerson);
             return Ok(updatedPerson);
 
         }

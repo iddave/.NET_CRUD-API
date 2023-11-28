@@ -8,6 +8,8 @@
         public DateTime BirthDate { get; set; }
         public Status Status { get; set; }
 
+        public Person() { }
+
         public Person(string fullName, string phoneNumber, DateTime birthDate)
         {
             FullName = fullName;

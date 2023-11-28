@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using WebApplication1.model;
 using WebApplication1.repository;
+using WebApplication1.repository.implementation;
 
 namespace WebApplication1
 {
@@ -15,7 +16,7 @@ namespace WebApplication1
             
             string connection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<MyAppContext>(options => options.UseSqlServer(connection));
-
+            builder.Services.AddScoped<IPersonRepository, PersonRepositoryImpl>();
             builder.Services.AddControllers();
 
             var app = builder.Build();
